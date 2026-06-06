@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Velox · Asistente de voz (Tester)</title>
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #14181d;
+      --line: #232a31;
+      --txt: #e9eef2;
+      --muted: #9aa7b2;
+      --accent: #19c37d;
+      --accent2: #0fa968;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 50% -10%, #15201b 0%, var(--bg) 55%);
+      color: var(--txt);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: flex; flex-direction: column; min-height: 100%;
+    }
+    .wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px 20px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--line); background: var(--panel);
+      color: var(--muted); font-size: 13px; padding: 6px 12px; border-radius: 999px; margin-bottom: 28px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+    h1 { font-size: clamp(30px, 5vw, 52px); line-height: 1.1; margin: 0 0 14px; letter-spacing: -0.02em; }
+    h1 .g { background: linear-gradient(90deg, var(--accent), #6ee7b7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    p.lead { font-size: clamp(16px, 2.2vw, 20px); color: var(--muted); max-width: 620px; margin: 0 auto 36px; line-height: 1.5; }
+    .card {
+      border: 1px solid var(--line); background: var(--panel);
+      border-radius: 16px; padding: 26px 24px; max-width: 460px; width: 100%;
+    }
+    .card h2 { font-size: 18px; margin: 0 0 10px; }
+    .steps { text-align: left; color: var(--muted); font-size: 15px; line-height: 1.7; margin: 0; padding-left: 20px; }
+    .steps b { color: var(--txt); }
+    .hint { margin-top: 22px; font-size: 13px; color: var(--muted); }
+    footer { text-align: center; color: #5c6770; font-size: 12px; padding: 18px; border-top: 1px solid var(--line); }
+    .arrow { margin-top: 18px; color: var(--accent); font-size: 14px; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <span class="badge"><span class="dot"></span> Entorno de prueba · Velox Voz</span>
+    <h1>Hablá con el <span class="g">asistente de Velox</span></h1>
+    <p class="lead">Probá el agente de voz como si fueras un cliente. Consultá por planes, precios, o pedí un turno — y fijate cómo responde.</p>
+
+    <div class="card">
+      <h2>Cómo probarlo</h2>
+      <ol class="steps">
+        <li>Tocá el <b>botón de llamada</b> (abajo a la derecha).</li>
+        <li><b>Permití el micrófono</b> cuando el navegador lo pida.</li>
+        <li>Hablá normal: <i>"Hola, quiero info de un plan"</i>.</li>
+      </ol>
+      <div class="arrow">↘ El botón está abajo a la derecha</div>
+    </div>
+
+    <p class="hint">Tip: probá pedir un turno para mañana a la tarde, o decí que querés pagar con débito, y mirá cómo reacciona.</p>
+  </main>
+
+  <footer>Velox · uso interno de prueba — no indexar / no compartir público</footer>
+
+  <!-- ===== Widget de voz de Vapi ===== -->
+  <script>
+    var vapiInstance = null;
+    const assistant = "73c892f6-9d74-42f9-a469-b5b4c80f6ab2"; // Velox Voz — Tester
+    const apiKey = "d4ab5841-d0c8-45b3-8a20-cc984c09a19e";    // Vapi PUBLIC key (segura para el front)
+    const buttonConfig = {
+      position: "bottom-right",
+      idle: {
+        color: "#19c37d",
+        type: "pill",
+        title: "Hablar con Velox",
+        subtitle: "Tocá para llamar",
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone.svg"
+      },
+      loading: {
+        color: "#0fa968",
+        type: "pill",
+        title: "Conectando...",
+        subtitle: "Un segundo",
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/loader-2.svg"
+      },
+      active: {
+        color: "#ef4444",
+        type: "pill",
+        title: "En llamada",
+        subtitle: "Tocá para cortar",
+        icon: "https://unpkg.com/lucide-static@0.321.0/icons/phone-off.svg"
+      }
+    };
+    (function (d, t) {
+      var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true; g.async = true;
+      s.parentNode.insertBefore(g, s);
+      g.onload = function () {
+        vapiInstance = window.vapiSDK.run({
+          apiKey: apiKey,
+          assistant: assistant,
+          config: buttonConfig
+        });
+      };
+    })(document, "script");
+  </script>
+</body>
+</html>
